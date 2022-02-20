@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Assessment</string>
+    <string name="str_searchview_hint">Search by City Name</string>
+</resources>
