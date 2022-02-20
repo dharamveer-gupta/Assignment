@@ -11,4 +11,8 @@ data class StateWithCity(
     val state: String = "",
     val city: String = "",
     var isChecked: Boolean = false
-)
+) {
+    override fun toString(): String {
+        return "$city, $state"
+    }
+}

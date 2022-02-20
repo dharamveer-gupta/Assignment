@@ -29,8 +29,6 @@ class MainViewModel : ViewModel() {
                 StateWithCity("Karnataka", "Bengaluru"),
                 StateWithCity("Kerala", "Thiruvananthapuram"),
                 /*City from M-Z*/
-                StateWithCity("Madhya Pradesh", "Bengaluru"),
-                StateWithCity("Kerala", "Thiruvananthapuram"),
                 StateWithCity("Madhya Pradesh", "Bhopal"),
                 StateWithCity("Maharashtra", "Mumbai"),
                 StateWithCity("Manipur", "Imphal"),

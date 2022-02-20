@@ -41,7 +41,7 @@ class CityAdapter(
 
     private var filteredCities = mutableListOf<StateWithCity>()
 
-    private lateinit var mListener : (Boolean) -> Unit
+    private var mListener : (Boolean) -> Unit
     init {
         filteredCities = cities
         mListener = listener
@@ -53,7 +53,7 @@ class CityAdapter(
         private val radioButton: MaterialRadioButton = itemView.findViewById(R.id.radioButton)
         fun bind(model: StateWithCity?, position: Int, listener: (Boolean) -> Unit) {
             model?.let {
-                txtCityName.text = "${it.city}, ${it.state}"
+                txtCityName.text = it.toString()
 
                 if (citySelected == model.city) {
                     itemView.isSelected = true
@@ -88,34 +88,32 @@ class CityAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    filteredCities = cities
+                filteredCities = if (charSearch.isEmpty()) {
+                    cities
                 } else {
                     val resultList = mutableListOf<StateWithCity>()
                     for (row in cities) {
-                        if (row.city.lowercase().contains(charSearch.lowercase())) {
+                        /**
+                         * Note - If requirement is to search by both City & State name then
+                         * row.toString().lowercase().contains(charSearch.lowercase())
+                         * */
 
+                        //Search only by City name
+                        if (row.city.lowercase().contains(charSearch.lowercase())) {
                             resultList.add(row)
-                            Log.e("Adapter", "performFiltering: ${filteredCities} ${row.city}")
                         }
                     }
-                    filteredCities = resultList
-                    Log.e("Adapter", "performFiltering: ${filteredCities.count()}")
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = filteredCities
-                Log.e("Adapter", "performFiltering>: ${filterResults.count}")
                 return filterResults
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-//                filteredCities.clear()
-                Log.e("Adapter", "performFiltering:= ${constraint?.length} ${results?.count}")
                 filteredCities = results?.values as MutableList<StateWithCity>
-                Log.e("Adapter", "performFiltering:- ${filteredCities.count()}")
                 notifyDataSetChanged()
             }
-
         }
     }
 
