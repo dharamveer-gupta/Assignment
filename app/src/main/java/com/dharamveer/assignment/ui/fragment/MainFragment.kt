@@ -45,6 +45,12 @@ class MainFragment : Fragment() {
             cityAdapter.differ.submitList(it ?: mutableListOf())
         }*/
 
+        viewModel.selectedCity.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                binding.buttonConfirm.isEnabled = true
+            }
+        }
+
         binding.searchViewCity.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -59,10 +65,14 @@ class MainFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        cityAdapter = CityAdapter(viewModel.cities.value ?: mutableListOf()) {
-            when(it) {
+        cityAdapter = CityAdapter(
+            viewModel.cities.value ?: mutableListOf(),
+            viewModel.selectedCity.value ?: ""
+        ) { selected, cityName ->
+
+            when(selected) {
                 true -> {
-                    binding.buttonConfirm.isEnabled = true
+                    viewModel.selectedCity.value = cityName
                 }
                 else -> {
                     return@CityAdapter

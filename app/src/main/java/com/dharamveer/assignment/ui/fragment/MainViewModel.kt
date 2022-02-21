@@ -7,9 +7,10 @@ import com.dharamveer.assignment.model.StateWithCity
 
 class MainViewModel : ViewModel() {
     private val _cities = MutableLiveData(mutableListOf<StateWithCity>())
-
     val cities : LiveData<MutableList<StateWithCity>>
     get() = _cities
+
+    val selectedCity = MutableLiveData<String>()
 
     fun getData() {
         _cities.value?.addAll(

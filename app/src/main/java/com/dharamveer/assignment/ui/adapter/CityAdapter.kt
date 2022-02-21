@@ -21,7 +21,8 @@ import com.google.android.material.radiobutton.MaterialRadioButton
  */
 class CityAdapter(
     private var cities: MutableList<StateWithCity>,
-    listener: (Boolean) -> Unit
+    val selectedCity: String = "",
+    listener: (Boolean, String) -> Unit
 ) : RecyclerView.Adapter<CityAdapter.CityViewHolder>(), Filterable {
 
     /*private val differCallback = object : DiffUtil.ItemCallback<StateWithCity>() {
@@ -37,11 +38,10 @@ class CityAdapter(
 
     val differ = AsyncListDiffer(this, differCallback)*/
 
-    private var citySelected: String = ""
-
+    private var citySelected: String = selectedCity
     private var filteredCities = mutableListOf<StateWithCity>()
+    private var mListener : (Boolean, String) -> Unit
 
-    private var mListener : (Boolean) -> Unit
     init {
         filteredCities = cities
         mListener = listener
@@ -51,7 +51,7 @@ class CityAdapter(
     inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val txtCityName: TextView = itemView.findViewById(R.id.textViewCityName)
         private val radioButton: MaterialRadioButton = itemView.findViewById(R.id.radioButton)
-        fun bind(model: StateWithCity?, position: Int, listener: (Boolean) -> Unit) {
+        fun bind(model: StateWithCity?, position: Int, listener: (Boolean, String) -> Unit) {
             model?.let {
                 txtCityName.text = it.toString()
 
@@ -67,7 +67,7 @@ class CityAdapter(
                     model.isChecked = true
                     citySelected = model.city
                     notifyDataSetChanged()
-                    mListener(true)
+                    listener(true, citySelected)
                 }
             }
         }
